@@ -33,7 +33,7 @@ configure it to accept weak user authentication.
 
 ### Register your copy of this as an application with Google.
 
-  Do this once!
+| Do this once!
 
 [Google has a web site for this](https://console.developers.google.com/apis/dashboard)
 or you can read more by searching for "Google OAuth2".
@@ -58,7 +58,7 @@ Note you should use the application name you registered with google as the
 
 ### Give your application permission to access your GMail account.
 
-  Do this once for each computer on which you run your application.
+| Do this once for each computer on which you run your application.
 
 Start GmailAttachmentReader using this command:
 
