@@ -5,13 +5,13 @@
 This is a Python3 script that will
 * Automatically log into a GMail account.
 * Look for unread messages with a specific label.
-* Look for attachments to those messages with a specific mime time
+* Look for attachments to those messages with a specific mime type.
     * Mime types are matched by prefix so "image/" matches "image/jpeg" or
       "image/png" or ...
 * Download those attachments into a specified directory using the filename
   from the mail message.
     * Warning: Currently this will overwrite existing files with the same name.
-* Mark the message unread or move the message to trash, or simply remove the label.
+* Mark the message unread, or move the message to trash, or simply remove the label.
 
 The program can either run as a one-shot, or it can be configured to check periodically
 until a request is received from the console to quit.
@@ -38,7 +38,7 @@ configure it to accept weak user authentication.
 [Google has a web site for this](https://console.developers.google.com/apis/dashboard)
 or you can read more by searching for "Google OAuth2".
 
-##### Huh? Isn't GmailAttachmentReader already registered as an application?
+#### Huh? Isn't GmailAttachmentReader already registered as an application?
 
 GmailAttachmentReader was developed as part of another application (which may eventually show up on GitHub)
 It runs using that application's identity.  Since you will not be running the parent application
