@@ -6,8 +6,8 @@
   "credential_file":  "../Credentials/GmailAttachmentReader_client.json",
   "authentication_file": "[gmail account name here].gmail.credentials",
   "checkEverySeconds": 30,
-  "label": "GARImages",
+  "label": "Photos",
   "dispose": "read",
   "mimeType" : "image/",
-  "downloadDirectory": "~/Pictures/FromMail",
+  "downloadDirectory": "~/Pictures/FromMail"
 }
