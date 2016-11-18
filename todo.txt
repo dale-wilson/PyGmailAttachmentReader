@@ -1,0 +1,3 @@
+Follow hyperlinks in body to images:
+  -- this needs to be done very carefully to avoid a lot of junk.
+

@@ -1,0 +1,7 @@
+__pycache__/
+*.jpg
+*.jpeg
+*.bak
+*.hold
+config*.json
+/hidden/

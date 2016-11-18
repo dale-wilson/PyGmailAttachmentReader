@@ -1,0 +1,13 @@
+{
+  "comment": ["Make a copy of this file named 'config[gmailAccountName].json'",
+              "Customize that file as desired.",
+              "Use the name of your customized file on the gmailAttachmentReader command line"],
+  "application": "GmailAttachmentReader",
+  "credential_file":  "../Credentials/GmailAttachmentReader_client.json",
+  "authentication_file": "[gmail account name here].gmail.credentials",
+  "checkEverySeconds": 30,
+  "label": "GARImages",
+  "dispose": "read",
+  "mimeType" : "image/",
+  "downloadDirectory": "~/Pictures/FromMail",
+}
