@@ -16,13 +16,13 @@ This is a Python3 script that will
 The program can either run as a one-shot, or it can be configured to check periodically
 until a request is received from the console to quit.
 
-## Wait a minute.  Doesn't this already exist.
+## Wait a minute.  Doesn't this already exist?
 
 There are other programs on GitHub and elsewhere that do roughly the same thing,
 however they require that you store your password in plain (or easily decodable)
 text on your computer, or that you enter your password every time you run the program
 
-> WARNING: Storing your password in plain text his is a terrible idea.  Please don't do it.
+> WARNING: Storing your password in plain text is is a terrible idea.  Please don't do it.
 
 Those other programs also require that you enable IMAP access to your account and
 configure it to accept weak user authentication.
@@ -37,6 +37,13 @@ configure it to accept weak user authentication.
 
 [Google has a web site for this](https://console.developers.google.com/apis/dashboard)
 or you can read more by searching for "Google OAuth2".
+
+When you register your application you will receive a "secrets" file.  Store it
+in a safe place.  Note that this is not as dangerous as storing a password.  If
+someone gets a copy of your secrets file they can claim to be your application
+which counts against the limit Google keeps of how often you can run your application
+before you have to pay.
+
 
 #### Huh? Isn't GmailAttachmentReader already registered as an application?
 
@@ -54,6 +61,9 @@ Customize the file to taste (see "commments" in the file itself.)
 Note you should use the application name you registered with google as the
 "application" in the configuration file.
 
+Set credential_file to the path to the secrets file you got when
+you registered your application
+
 ### Log into your GMail account (use any old browser you want to.)
 Create a filter that will recognize the messages from which you want to
 capture attachments and apply a label to them (the label you specified
@@ -62,7 +72,7 @@ in the config file.)
 | I tell people to send pictures to *mygmailaccount&+photo@gmail.com.  GMail
 ignores the field after the plus sign(+) and sends the message to my account
 anyway but the filters can see the +photo so they know which messages I'm
-interested in.  
+interested in.   
 
 ### Give your application permission to access your GMail account.
 
@@ -89,6 +99,18 @@ filename you specified when you edited the config file.
 After doing this you will have to re-authorize (or deny authorization) the next
 time you run GmailAttachmentReader.
 
+## What if I have more than one GMail account I want to read from?
+
+Make a new configuration file and use a different name for the authentication_file
+(that's why I suggested the naming convention that includes your email account name.)
+Start GmailAttachmentReader and when it can't find the authentication process, it
+will ask permission again.  Use your other email account this time.   After that
+you will be able to switch back and forth between accounts by changing the
+name of the configuration file on the command line used to start GmailAttachmentReader.
+
+If you want to read from both accounts at the same time, you'll have to start
+two copies of GmailAttachmentReader.
+
 ## Why Python3?
 
 Because it is a better language than Python2 and it is mature enough now that I
@@ -102,3 +124,10 @@ You're welcome.
 
 Read license.txt.   Briefly use it at will.  Just give me credit if it works and
 don't blame me if it breaks.  
+
+## Cool.  All this information and no advertising!
+
+Almost forgot.  I developed this on my own time for fun, but my daytime job is working
+for [Object Computing, Inc.](http://ociweb.com/)  We do
+a lot of good work with open source (and some custom projects, to.)  Check us
+out next time you need some software development expertise for hire.  
