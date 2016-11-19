@@ -69,7 +69,7 @@ Create a filter that will recognize the messages from which you want to
 capture attachments and apply a label to them (the label you specified
 in the config file.)
 
-| I tell people to send pictures to *mygmailaccount&+photo@gmail.com.  GMail
+| I tell people to send pictures to *mygmailaccount*+photo@gmail.com.  GMail
 ignores the field after the plus sign(+) and sends the message to my account
 anyway but the filters can see the +photo so they know which messages I'm
 interested in.   
