@@ -129,5 +129,5 @@ don't blame me if it breaks.
 
 Almost forgot.  I developed this on my own time for fun, but my daytime job is working
 for [Object Computing, Inc.](http://ociweb.com/)  We do
-a lot of good work with open source (and some custom projects, to.)  Check us
+a lot of good work with open source (and some custom projects, too.)  Check us
 out next time you need some software development expertise for hire.  
