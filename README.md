@@ -10,7 +10,10 @@ This is a Python3 script that will
       "image/png" or ...
 * Download those attachments into a specified directory using the filename
   from the mail message.
-    * Warning: Currently this will overwrite existing files with the same name.
+    * If no file name is specified in the mail message, make one up using a format
+    you supply.
+    * If a file already exists with the specified name, decorate the file name with 
+    a generation number: i.e. (file.txt, file(1).txt, file(2).txt, etc.
 * Mark the message unread, or move the message to trash, or simply remove the label.
 
 The program can either run as a one-shot, or it can be configured to check periodically
@@ -42,8 +45,7 @@ When you register your application you will receive a "secrets" file.  Store it
 in a safe place.  Note that this is not as dangerous as storing a password.  If
 someone gets a copy of your secrets file they can claim to be your application
 which counts against the limit Google keeps of how often you can run your application
-before you have to pay.
-
+before you have to pay.  They will *not* have access to your private information.
 
 #### Huh? Isn't GmailAttachmentReader already registered as an application?
 
@@ -113,7 +115,8 @@ two copies of GmailAttachmentReader.
 
 ## Why Python3?
 
-Because it is a better language than Python2 and it is mature enough now that I
+Because it is a better language than Python2 which in turn is better (in my opinion) than
+the other scripting languages available.  Python3 is mature enough now that I
 am hoping people start using it for "everything."
 
 ## Thanks.
@@ -123,11 +126,12 @@ You're welcome.
 ## Oh yeah.  How about licensing?
 
 Read license.txt.   Briefly use it at will.  Just give me credit if it works and
-don't blame me if it breaks.  
+don't blame me if it breaks.  (Seems fair enough to me.  I thought of offering a
+money-back guarantee -- less handling costs -- to anyone who diesn't like it.)
 
 ## Cool.  All this information and no advertising!
 
 Almost forgot.  I developed this on my own time for fun, but my daytime job is working
 for [Object Computing, Inc.](http://ociweb.com/)  We do
-a lot of good work with open source (and some custom projects, too.)  Check us
+a lot of good work with open source, and some amazing custom projects, too.  Check us
 out next time you need some software development expertise for hire.  

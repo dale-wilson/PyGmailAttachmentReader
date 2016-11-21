@@ -15,6 +15,7 @@ import argparse
 import json
 import base64
 import time
+import datetime
 import threading
 from apiclient import discovery
 from oauth2client import client
@@ -43,6 +44,34 @@ def optionallyCreateDirectory(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
+def writeUniqueFile(data, directory, filename):
+    """
+    Writes data to a newly created file 'filename' in directory 'directory'
+    If the file already exists, decorate the filename by appending (#)
+    between the base name and the extension: i.e. file(1).text or file(2).text
+    Returns the full path of the file to which the data was written.
+    Throws OSErrors if anything other than duplicate filenames goes wrong.
+    """
+
+    filePath = os.path.join(directory, filename)
+    base, extension = os.path.splitext(filePath)
+    generation = 0
+
+    flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+    while True:
+        try:
+            handle = os.open(filePath, flags)
+            with os.fdopen(handle, 'wb')  as attachFile:
+                attachFile.write(data)
+                return filePath
+        except OSError as e:
+            if e.errno == errno.EEXIST:  # the file already exists.
+                filePath = "{}({}){}".format(base, generation, extension)
+                generation += 1
+            else:  # Something unexpected went wrong so reraise the exception.
+                raise
+
 
 class GmailAttachmentReader:
     """
@@ -90,9 +119,9 @@ class GmailAttachmentReader:
 
         self._downloadDirectory = os.path.expanduser(
             os.path.expandvars(config["downloadDirectory"]))
-        optionallyCreateDirectory(self._downloadDirectory)
-        print("Downloading {} attachments from messages labeled {} to: {}".format(
-            self._mimeType, self._label, self._downloadDirectory))
+
+        self._generatedFilenameFormat = getConfig(config,
+            "generatedFilenameFormat", "%Y%m%d_%H%M%S")
 
         home_dir = os.path.expanduser('~')
         credential_dir = os.path.join(home_dir, '.credentials')
@@ -109,6 +138,10 @@ class GmailAttachmentReader:
             print('Storing credentials to ' + credentialPath)
             store.put(credentials)
         self._credentials = credentials
+
+        optionallyCreateDirectory(self._downloadDirectory)
+        print("Downloading {} attachments from messages labeled {} to {}".format(
+            self._mimeType, self._label, self._downloadDirectory))
 
         self._worker = None
         self._service = None
@@ -227,8 +260,10 @@ class GmailAttachmentReader:
         payload = message["payload"]
         foundAttachment = False
         if "mimeType" in payload:
-            if self._processAttachmentPart(messageId, payload):
-                foundAttachment = True
+            mimeType = payload["mimeType"]
+            if not mimeType.startswith("multipart/"):
+                if self._processAttachmentPart(messageId, mimeType, payload):
+                    foundAttachment = True
 
         # for multi-part messages process each individual part.
         if "parts" in payload:
@@ -262,26 +297,32 @@ class GmailAttachmentReader:
         if self._verbose:
             print ("MimeType:", mimeType)
         if mimeType.startswith(self._mimeType):
-            filename = part["filename"]
+            filename = None
+            if "filename" in part:
+                filename = part["filename"]
+            if not filename:
+                now = datetime.datetime.now()
+                filename = now.strftime(self._generatedFilenameFormat)
+
             body = part["body"]
             if "attachmentId" in body:
               self._retrieveAttachment(messageId, filename, body["attachmentId"])
             elif "data" in body:
-              self._processAttachment(filename, body)
+              self._processAttachment(filename, mimeType, body)
             return True
         if self._verbose:
             print("Ignoring mime type:", mimeType)
         return False
 
-    def _retrieveAttachment(self, messageId, filename, attachmentId):
+    def _retrieveAttachment(self, messageId, filename, mimeType, attachmentId):
         print("Retrieving {}".format(filename))
         attachment = self._service.users().messages().attachments().get(
             userId = "me",
             messageId=messageId,
             id=attachmentId ).execute()
-        self._processAttachment(filename, attachment)
+        self._processAttachment(filename, mimeType, attachment)
 
-    def _processAttachment(self, filename, attachment):
+    def _processAttachment(self, filename, mimeType, attachment):
         if self._verbose:
             print("base64 decoding attachment", filename, attachment.keys())
         b64Data = attachment['data']
@@ -292,11 +333,8 @@ class GmailAttachmentReader:
                 captureFile.write(b64Data)
 
         data = base64.urlsafe_b64decode(b64Data)
-        filePath = os.path.join(self._downloadDirectory, filename)
-        print("Writing attachment to", filePath)
-        with open(filePath, "wb") as attachFile:
-            attachFile.write(data)
-        print("write complete")
+        print("Attachment {} written to {}".format(mimeType,
+            writeUniqueFile(data, self._downloadDirectory, filename)))
 
     def _trashMessage(self, messageId):
         print("Message moved to trash")
