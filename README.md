@@ -14,7 +14,7 @@ This is a Python3 script that will
     you supply.
     * If a file already exists with the specified name, decorate the file name with 
     a generation number: i.e. (file.txt, file(1).txt, file(2).txt, etc.
-* Mark the message unread, or move the message to trash, or simply remove the label.
+* Mark the message *read*, or move the message to trash, or simply remove the label.
 
 The program can either run as a one-shot, or it can be configured to check periodically
 until a request is received from the console to quit.
